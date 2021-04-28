@@ -1,11 +1,18 @@
 package com.gn.food.dao.models;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "Products")
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer productId;
     private String name;
     private Double price;
     private Integer quantity;
     private String picture;
+    @ManyToOne
     private Category category;
 
     public Product(final String name, final Double price, final Integer quantity, final String picture, final Category category) {
