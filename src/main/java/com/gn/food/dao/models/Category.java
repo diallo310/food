@@ -6,8 +6,7 @@ public class Category {
     private String variant;
 
 
-    public Category(Integer categoryId, String name, String variant) {
-        this.categoryId = categoryId;
+    public Category(String name, String variant) {
         this.name = name;
         this.variant = variant;
     }
