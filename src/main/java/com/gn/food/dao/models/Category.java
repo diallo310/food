@@ -2,6 +2,7 @@ package com.gn.food.dao.models;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Categories", uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
@@ -16,6 +17,11 @@ public class Category {
     private List<Product> products;
 
     public Category(String name) {
+        this.name = name;
+    }
+
+    public Category(int categoryId, String name) {
+        this.categoryId = categoryId;
         this.name = name;
     }
 
@@ -49,5 +55,18 @@ public class Category {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return categoryId == category.categoryId && Objects.equals(name, category.name) && Objects.equals(variant, category.variant) && Objects.equals(products, category.products);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(categoryId, name, variant, products);
     }
 }
