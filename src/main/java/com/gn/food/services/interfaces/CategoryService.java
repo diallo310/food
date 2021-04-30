@@ -1,15 +1,15 @@
 package com.gn.food.services.interfaces;
 
+import com.gn.food.services.responses.CategoryItem;
 import com.gn.food.webservice.requests.CategoryRequestCreate;
 import com.gn.food.webservice.requests.CategoryRequestUpdate;
-import com.gn.food.services.responses.CategoryItem;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CategoryService {
-    void create(CategoryRequestCreate categoryRequestCreate);
+    CategoryItem create(CategoryRequestCreate categoryRequestCreate);
 
     Optional<CategoryItem> findById();
 
