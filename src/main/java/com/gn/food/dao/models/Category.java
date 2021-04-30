@@ -4,27 +4,26 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "Categories", uniqueConstraints = {@UniqueConstraint(columnNames = "variant"), @UniqueConstraint(columnNames = "name")})
+@Table(name = "Categories", uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer categoryId;
+    private int categoryId;
     private String name;
     @OneToMany
     private List<Variant> variant;
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 
-    public Category(String name, List<Variant> variant) {
+    public Category(String name) {
         this.name = name;
-        this.variant = variant;
     }
 
-    public Integer getCategoryId() {
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Integer categoryId) {
+    public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 

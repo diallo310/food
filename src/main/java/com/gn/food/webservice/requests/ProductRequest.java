@@ -1,4 +1,7 @@
-package com.gn.food.services.requests;
+package com.gn.food.webservice.requests;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
@@ -10,7 +13,8 @@ public class ProductRequest {
     private final String description;
     private final int categoryId;
 
-    public ProductRequest(final String name, final double price, final int quantity, final String picture, final String description, final int categoryId) {
+    @JsonCreator
+    public ProductRequest(@JsonProperty("name") final String name, @JsonProperty("price") final double price, @JsonProperty("quantity") final int quantity, @JsonProperty("picture") final String picture, @JsonProperty("description") final String description, @JsonProperty("categoryId") final int categoryId) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;

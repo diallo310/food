@@ -1,6 +1,6 @@
 package com.gn.food.services.interfaces;
 
-import com.gn.food.services.requests.ProductRequest;
+import com.gn.food.webservice.requests.ProductRequest;
 import com.gn.food.services.responses.ProductItem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
