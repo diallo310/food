@@ -1,22 +1,25 @@
-package com.gn.food.webservice.requests;
+package com.gn.food.webservice.controllers;
 
 import com.gn.food.services.interfaces.CategoryService;
 import com.gn.food.services.responses.CategoryItem;
+import com.gn.food.webservice.requests.CategoryRequestCreate;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("categories")
-public class controllers {
+public class CategoryController {
     private final CategoryService categoryService;
 
-    public controllers(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
     @PostMapping
-    public CategoryItem create(@Valid @RequestBody CategoryRequestCreate categoryRequestCreate){
+    @ResponseStatus(HttpStatus.CREATED)
+    public CategoryItem create(@Valid @RequestBody CategoryRequestCreate categoryRequestCreate) {
         return categoryService.create(categoryRequestCreate);
     }
 }

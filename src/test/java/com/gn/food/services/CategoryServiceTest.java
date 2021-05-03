@@ -3,10 +3,8 @@ package com.gn.food.services;
 import com.gn.food.dao.models.Category;
 import com.gn.food.dao.repositories.CategoryRepository;
 import com.gn.food.services.impl.DefaultCategoryService;
-import com.gn.food.services.interfaces.CategoryService;
 import com.gn.food.services.responses.CategoryItem;
 import com.gn.food.webservice.requests.CategoryRequestCreate;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,8 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -39,6 +37,5 @@ public class CategoryServiceTest {
 
         verify(categoryRepository).save(new Category("Alimentation"));
         verifyNoMoreInteractions(categoryRepository);
-
     }
 }
