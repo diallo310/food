@@ -28,6 +28,12 @@ public class Category {
         this.name = name;
     }
 
+    public Category(final int categoryId, final String name, final List<Variant> variant) {
+        this.categoryId = categoryId;
+        this.name = name;
+        this.variant = variant;
+    }
+
     public int getCategoryId() {
         return categoryId;
     }

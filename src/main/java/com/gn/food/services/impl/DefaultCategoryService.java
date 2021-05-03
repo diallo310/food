@@ -3,9 +3,9 @@ package com.gn.food.services.impl;
 import com.gn.food.dao.models.Category;
 import com.gn.food.dao.repositories.CategoryRepository;
 import com.gn.food.services.interfaces.CategoryService;
+import com.gn.food.services.responses.CategoryItem;
 import com.gn.food.webservice.requests.CategoryRequestCreate;
 import com.gn.food.webservice.requests.CategoryRequestUpdate;
-import com.gn.food.services.responses.CategoryItem;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +32,14 @@ public class DefaultCategoryService implements CategoryService {
     }
 
     @Override
-    public Optional<CategoryItem> update(int categoryId, CategoryRequestUpdate categoryRequest) {
-        return Optional.empty();
+    public Optional<CategoryItem> update(int categoryId, CategoryRequestUpdate categoryRequestUpdate) {
+        final Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
+
+        return categoryOptional.map(category -> {
+            category.setName(categoryRequestUpdate.getName());
+            category.setVariant(categoryRequestUpdate.getVariants());
+            return categoryRepository.save(category);
+        }).map(this::categoryItemMapper);
     }
 
     @Override
@@ -46,7 +52,7 @@ public class DefaultCategoryService implements CategoryService {
 
     }
 
-    private CategoryItem categoryItemMapper(Category category){
-        return new CategoryItem(category.getCategoryId(),category.getName(),category.getVariant());
+    private CategoryItem categoryItemMapper(Category category) {
+        return new CategoryItem(category.getCategoryId(), category.getName(), category.getVariant());
     }
 }
