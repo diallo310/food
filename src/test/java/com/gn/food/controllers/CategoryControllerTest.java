@@ -16,12 +16,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("CategoryController Test")
 @WebMvcTest(CategoryController.class)
@@ -66,4 +67,20 @@ public class CategoryControllerTest {
         verifyNoMoreInteractions(categoryService);
     }
 
+    @Test
+    @DisplayName("Should return Category with given Id")
+    void shouldReturnCategoryWithGivenId() throws Exception {
+        CategoryItem categoryItemExpected = new CategoryItem(1, "Alimentations", Collections.emptyList());
+
+        when(categoryService.findById(anyInt())).thenReturn(Optional.of(categoryItemExpected));
+
+        mockMvc.perform(get("/categories/{categoryId}", 1))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.categoryId", is(categoryItemExpected.getCategoryId())))
+                .andExpect(jsonPath("$.name", is(categoryItemExpected.getName())))
+                .andExpect(jsonPath("$.variants", is(categoryItemExpected.getVariants())));
+        verify(categoryService).findById(1);
+        verifyNoMoreInteractions(categoryService);
+    }
 }
