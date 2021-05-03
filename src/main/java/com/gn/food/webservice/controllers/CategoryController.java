@@ -41,4 +41,10 @@ public class CategoryController {
         return ResponseEntity.of(categoryService.update(categoryId, categoryRequestUpdate));
     }
 
+    @DeleteMapping("/{categoryId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable("categoryId") int categoryId) {
+        categoryService.deleteById(categoryId);
+    }
+
 }

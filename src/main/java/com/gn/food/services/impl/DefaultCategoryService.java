@@ -6,7 +6,6 @@ import com.gn.food.services.interfaces.CategoryService;
 import com.gn.food.services.responses.CategoryItem;
 import com.gn.food.webservice.requests.CategoryRequestCreate;
 import com.gn.food.webservice.requests.CategoryRequestUpdate;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,14 +45,14 @@ public class DefaultCategoryService implements CategoryService {
 
     @Override
     public List<CategoryItem> findAll() {
-        return StreamSupport.stream(categoryRepository.findAll().spliterator(),false)
+        return StreamSupport.stream(categoryRepository.findAll().spliterator(), false)
                 .map(this::categoryItemMapper)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public void delete(int categoryId) {
-
+    public void deleteById(int categoryId) {
+        categoryRepository.deleteById(categoryId);
     }
 
     private CategoryItem categoryItemMapper(Category category) {

@@ -17,5 +17,5 @@ public interface CategoryService {
 
     List<CategoryItem> findAll();
 
-    void delete(int categoryId);
+    void deleteById(int categoryId);
 }
