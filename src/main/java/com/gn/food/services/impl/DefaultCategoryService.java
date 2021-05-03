@@ -27,8 +27,8 @@ public class DefaultCategoryService implements CategoryService {
     }
 
     @Override
-    public Optional<CategoryItem> findById() {
-        return Optional.empty();
+    public Optional<CategoryItem> findById(int categoryId) {
+        return categoryRepository.findById(categoryId).map(this::categoryItemMapper);
     }
 
     @Override

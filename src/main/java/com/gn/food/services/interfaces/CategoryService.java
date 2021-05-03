@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface CategoryService {
     CategoryItem create(CategoryRequestCreate categoryRequestCreate);
 
-    Optional<CategoryItem> findById();
+    Optional<CategoryItem> findById(int categoryId);
 
     Optional<CategoryItem> update(int categoryId, CategoryRequestUpdate categoryRequestUpdate);
 

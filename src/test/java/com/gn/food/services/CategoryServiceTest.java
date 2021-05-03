@@ -12,6 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -38,4 +42,23 @@ public class CategoryServiceTest {
         verify(categoryRepository).save(new Category("Alimentation"));
         verifyNoMoreInteractions(categoryRepository);
     }
+
+    @Test
+    @DisplayName("Should return Category with this ID")
+    void shouldReturnCategoryWithThisId() {
+        when(categoryRepository.findById(1)).thenReturn(Optional.of(new Category(1, "Alimentation")));
+
+        Optional<CategoryItem> categoryItemActualOptional = defaultCategoryService.findById(1);
+
+        assertThat(categoryItemActualOptional.isPresent(), is(true));
+
+        CategoryItem categoryItemActual = categoryItemActualOptional.get();
+
+        assertThat(categoryItemActual.getCategoryId(), is(1));
+        assertThat(categoryItemActual.getName(), is("Alimentation"));
+
+        verify(categoryRepository).findById(1);
+        verifyNoMoreInteractions(categoryRepository);
+    }
+
 }
