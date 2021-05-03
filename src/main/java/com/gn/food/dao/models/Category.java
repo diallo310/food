@@ -12,7 +12,7 @@ public class Category {
     private int categoryId;
     private String name;
     @OneToMany
-    private List<Variant> variant;
+    private List<Variant> variants;
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 
@@ -28,10 +28,10 @@ public class Category {
         this.name = name;
     }
 
-    public Category(final int categoryId, final String name, final List<Variant> variant) {
+    public Category(final int categoryId, final String name, final List<Variant> variants) {
         this.categoryId = categoryId;
         this.name = name;
-        this.variant = variant;
+        this.variants = variants;
     }
 
     public int getCategoryId() {
@@ -51,11 +51,11 @@ public class Category {
     }
 
     public List<Variant> getVariant() {
-        return variant;
+        return variants;
     }
 
-    public void setVariant(List<Variant> variant) {
-        this.variant = variant;
+    public void setVariant(List<Variant> variants) {
+        this.variants = variants;
     }
 
     public List<Product> getProducts() {
@@ -71,11 +71,11 @@ public class Category {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
-        return categoryId == category.categoryId && Objects.equals(name, category.name) && Objects.equals(variant, category.variant) && Objects.equals(products, category.products);
+        return categoryId == category.categoryId && Objects.equals(name, category.name) && Objects.equals(variants, category.variants) && Objects.equals(products, category.products);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(categoryId, name, variant, products);
+        return Objects.hash(categoryId, name, variants, products);
     }
 }

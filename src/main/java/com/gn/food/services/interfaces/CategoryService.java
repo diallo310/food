@@ -15,7 +15,7 @@ public interface CategoryService {
 
     Optional<CategoryItem> update(int categoryId, CategoryRequestUpdate categoryRequestUpdate);
 
-    List<CategoryItem> findAll(Pageable pageable);
+    List<CategoryItem> findAll();
 
     void delete(int categoryId);
 }

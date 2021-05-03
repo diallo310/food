@@ -14,9 +14,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -84,7 +87,23 @@ public class CategoryServiceTest {
         inOrder.verify(categoryRepository).findById(1);
         inOrder.verify(categoryRepository).save(new Category(1, "Alimentations", Collections.emptyList()));
         inOrder.verifyNoMoreInteractions();
+    }
 
+    @Test
+    @DisplayName("should return All categories")
+    void shouldReturnAllCategories() {
+        List<Category> categoriesExpected = Arrays.asList(new Category(1, "Alimentations"), new Category(2, "Vêtements"));
+
+        when(categoryRepository.findAll()).thenReturn(categoriesExpected);
+
+        List<CategoryItem> categoriesItemActual = defaultCategoryService.findAll();
+
+        assertThat(categoriesExpected).usingRecursiveComparison()
+                .ignoringFields("products")
+                .isEqualTo(categoriesItemActual);
+
+        verify(categoryRepository).findAll();
+        verifyNoMoreInteractions(categoryRepository);
     }
 
 

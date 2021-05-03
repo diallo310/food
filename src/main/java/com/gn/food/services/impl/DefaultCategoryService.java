@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class DefaultCategoryService implements CategoryService {
@@ -43,8 +45,10 @@ public class DefaultCategoryService implements CategoryService {
     }
 
     @Override
-    public List<CategoryItem> findAll(Pageable pageable) {
-        return null;
+    public List<CategoryItem> findAll() {
+        return StreamSupport.stream(categoryRepository.findAll().spliterator(),false)
+                .map(this::categoryItemMapper)
+                .collect(Collectors.toList());
     }
 
     @Override
