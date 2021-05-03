@@ -5,13 +5,16 @@ import com.gn.food.dao.repositories.CategoryRepository;
 import com.gn.food.services.impl.DefaultCategoryService;
 import com.gn.food.services.responses.CategoryItem;
 import com.gn.food.webservice.requests.CategoryRequestCreate;
+import com.gn.food.webservice.requests.CategoryRequestUpdate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -34,7 +37,7 @@ public class CategoryServiceTest {
 
         when(categoryRepository.save(any())).thenReturn(categoryExpected);
 
-        CategoryItem categoryItemActual = defaultCategoryService.create(new CategoryRequestCreate("Alimentation"));
+        final CategoryItem categoryItemActual = defaultCategoryService.create(new CategoryRequestCreate("Alimentation"));
 
         assertEquals(categoryExpected.getCategoryId(), categoryItemActual.getCategoryId());
         assertEquals(categoryExpected.getName(), categoryItemActual.getName());
@@ -52,7 +55,7 @@ public class CategoryServiceTest {
 
         assertThat(categoryItemActualOptional.isPresent(), is(true));
 
-        CategoryItem categoryItemActual = categoryItemActualOptional.get();
+        final CategoryItem categoryItemActual = categoryItemActualOptional.get();
 
         assertThat(categoryItemActual.getCategoryId(), is(1));
         assertThat(categoryItemActual.getName(), is("Alimentation"));
@@ -60,5 +63,29 @@ public class CategoryServiceTest {
         verify(categoryRepository).findById(1);
         verifyNoMoreInteractions(categoryRepository);
     }
+
+    @Test
+    @DisplayName("Should update name the Catagory with this Id")
+    void shouldUpdateNameCategoryWithThisId() {
+
+        when(categoryRepository.findById(anyInt())).thenReturn(Optional.of(new Category(1, "Alimentation")));
+        when(categoryRepository.save(any())).thenReturn(new Category(1, "Alimentations"));
+
+        final Optional<CategoryItem> categoryItemActualOptional = defaultCategoryService.update(1, new CategoryRequestUpdate("Alimentations", Collections.emptyList()));
+
+        assertThat(categoryItemActualOptional.isPresent(), is(true));
+
+        final CategoryItem categoryItemActual = categoryItemActualOptional.get();
+
+        InOrder inOrder = inOrder(categoryRepository);
+
+        assertThat(categoryItemActual.getName(), is("Alimentations"));
+
+        inOrder.verify(categoryRepository).findById(1);
+        inOrder.verify(categoryRepository).save(new Category(1, "Alimentations", Collections.emptyList()));
+        inOrder.verifyNoMoreInteractions();
+
+    }
+
 
 }
