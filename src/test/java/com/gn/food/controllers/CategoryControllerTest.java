@@ -13,7 +13,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,14 +44,26 @@ public class CategoryControllerTest {
                 post("/categories")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(new CategoryRequestCreate("Alimentation"))))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-
                 .andExpect(content().json("{\"categoryId\":1,\"name\":\"Alimentation\",\"variants\":null}"));
 
         verify(categoryService).create(new CategoryRequestCreate("Alimentation"));
         verifyNoMoreInteractions(categoryService);
     }
 
+    @Test
+    @DisplayName("Should return all categories")
+    public void shouldReturnAllCategories() throws Exception {
+        List<CategoryItem> categoriesItemExpected = Arrays.asList(new CategoryItem(1, "Alimentations", Collections.emptyList()), new CategoryItem(2, "Livres", Collections.emptyList()));
+
+        when(categoryService.findAll()).thenReturn(categoriesItemExpected);
+
+        mockMvc.perform(get("/categories"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[{\"categoryId\":1,\"name\":\"Alimentations\",\"variants\":[]},{\"categoryId\":2,\"name\":\"Livres\",\"variants\":[]}]"));
+
+        verify(categoryService).findAll();
+        verifyNoMoreInteractions(categoryService);
+    }
 
 }
