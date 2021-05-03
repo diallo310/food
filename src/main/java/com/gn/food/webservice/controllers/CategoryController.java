@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("categories")
@@ -30,9 +31,14 @@ public class CategoryController {
         return ResponseEntity.of(categoryService.findById(categoryId));
     }
 
+    @GetMapping
+    public List<CategoryItem> findAll() {
+        return categoryService.findAll();
+    }
+
     @PatchMapping("/{categoryId}")
-    public ResponseEntity<CategoryItem>update(@PathVariable("categoryId") int categoryId, @Valid @RequestBody CategoryRequestUpdate categoryRequestUpdate){
-        return ResponseEntity.of(categoryService.update(categoryId,categoryRequestUpdate));
+    public ResponseEntity<CategoryItem> update(@PathVariable("categoryId") int categoryId, @Valid @RequestBody CategoryRequestUpdate categoryRequestUpdate) {
+        return ResponseEntity.of(categoryService.update(categoryId, categoryRequestUpdate));
     }
 
 }
