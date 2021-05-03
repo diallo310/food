@@ -5,6 +5,7 @@ import com.gn.food.services.interfaces.CategoryService;
 import com.gn.food.services.responses.CategoryItem;
 import com.gn.food.webservice.controllers.CategoryController;
 import com.gn.food.webservice.requests.CategoryRequestCreate;
+import com.gn.food.webservice.requests.CategoryRequestUpdate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,7 @@ import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("CategoryController Test")
@@ -80,7 +80,28 @@ public class CategoryControllerTest {
                 .andExpect(jsonPath("$.categoryId", is(categoryItemExpected.getCategoryId())))
                 .andExpect(jsonPath("$.name", is(categoryItemExpected.getName())))
                 .andExpect(jsonPath("$.variants", is(categoryItemExpected.getVariants())));
+
         verify(categoryService).findById(1);
         verifyNoMoreInteractions(categoryService);
     }
+
+    @Test
+    @DisplayName("Should return category with updated name")
+    void shouldReturnCategoryWithUpdatedName() throws Exception {
+        CategoryItem categoryItemExpected = new CategoryItem(1, "Alimentations", Collections.emptyList());
+
+        when(categoryService.update(anyInt(), any())).thenReturn(Optional.of(categoryItemExpected));
+
+        mockMvc.perform(patch("/categories/{categoryId}", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(new CategoryRequestUpdate("Alimentations", Collections.emptyList()))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.categoryId", is(categoryItemExpected.getCategoryId())))
+                .andExpect(jsonPath("$.name", is(categoryItemExpected.getName())))
+                .andExpect(jsonPath("$.variants", is(categoryItemExpected.getVariants())));
+
+        verify(categoryService).update(1, new CategoryRequestUpdate("Alimentations", Collections.emptyList()));
+        verifyNoMoreInteractions(categoryService);
+    }
+
 }
