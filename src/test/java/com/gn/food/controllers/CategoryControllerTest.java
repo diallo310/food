@@ -104,4 +104,13 @@ public class CategoryControllerTest {
         verifyNoMoreInteractions(categoryService);
     }
 
+    @Test
+    @DisplayName("Should delete category with given Id")
+    void shouldDeleteCategoryWithGivenId() throws Exception {
+         mockMvc.perform(delete("/categories/{categoryId}",1))
+                 .andExpect(status().isNoContent());
+         verify(categoryService).deleteById(1);
+         verifyNoMoreInteractions(categoryService);
+    }
+
 }

@@ -106,5 +106,11 @@ public class CategoryServiceTest {
         verifyNoMoreInteractions(categoryRepository);
     }
 
-
+    @Test
+    @DisplayName("should delete category with given id")
+    void shouldDeleteCategoryWithGivenId() {
+        defaultCategoryService.deleteById(1);
+        verify(categoryRepository).deleteById(1);
+        verifyNoMoreInteractions(categoryRepository);
+    }
 }
